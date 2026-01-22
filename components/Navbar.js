@@ -84,55 +84,40 @@ export default function Navbar() {
 
   return (
     <header className="header">
-      <div className="header__inner">
-        <Link className="header__logo" href="/" aria-label="Raine Architects">
-          <Image
-            className="header__logo-image"
-            src={logoSrc}
-            alt="Raine Architects"
-            width={174}
-            height={94}
-            priority
-          />
-        </Link>
+      <header className="header">
+        <div className="header-content">
+          <div className="logo">LOGO</div>
 
-        <nav className="header__nav" aria-label="Main">
-          <ul className="header__menu">
-            <li>
-              <Link className="header__link" href="/ueber-uns">
-                <span className="header__dot" aria-hidden="true" />
-                <span>Über Uns</span>
-              </Link>
-            </li>
-            <li>
-              <Link className="header__link expertise-link" href="/leistungen">
-                <span className="header__dot" aria-hidden="true" />
-                <span>Leistungen</span>
-              </Link>
-            </li>
-            <li>
-              <Link className="header__link" href="/kontakt">
-                <span className="header__dot" aria-hidden="true" />
-                <span>Kontakt</span>
-              </Link>
-            </li>
-          </ul>
-        </nav>
+          <nav className="header__menu">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#expertise" className="expertise-link">
+              Expertise
+            </a>
+            <a href="#contact">Contact</a>
+          </nav>
 
-        <div className="header__actions">
-          <a className="header__phone" href="tel:022535448265">
-            02253 – 544 82 65
-          </a>
-          <button
-            className="header-burger-menu"
-            type="button"
-            aria-label="Open menu"
-          >
-            <span />
-            <span />
-            <span />
-          </button>
+          <div className="header-burger-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </div>
+      </header>
+
+      <div className="scroll-container">
+        <section style={{height: "100vh", background: "#f0f0f0", display: "flex", alignItems: "center", justifyContent: "center"}}>
+          <h1>Scroll down to test header</h1>
+        </section>
+
+        <section style={{height: "100vh", background: "#e0e0e0", display: "flex", alignItems: "center", justifyContent: "center"}}>
+          <h2>Keep scrolling...</h2>
+        </section>
+
+        <section style={{height: "100vh", background: "#d0d0d0", display: "flex", alignItems: "center", justifyContent: "center"}}>
+          <h2>Scroll up to see header appear</h2>
+        </section>
       </div>
     </header>
   );
