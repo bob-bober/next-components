@@ -1,124 +1,138 @@
 "use client";
-
-import { useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
-
-const logoSrc = "/images/logo.svg";
+import { useState, useEffect } from "react";
 
 export default function Navbar() {
+  // State: Steuert ob Navbar sichtbar oder versteckt ist
+  const [isHidden, setIsHidden] = useState(false);
+
+  // State: Steuert ob Mobile-Menü offen oder geschlossen ist
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Toggle-Funktion für Mobile-Menü (offen ↔ geschlossen)
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
   useEffect(() => {
+    // lastScroll als lokale Variable (kein State, da kein Re-Render bei Änderung nötig)
     let lastScroll = 0;
-    const header = document.querySelector(".header");
-    const scroller = document.querySelector(".scroll-container");
 
-    if (!header) {
-      return undefined;
-    }
+    const handleScroll = () => {
+      const currentScroll = window.pageYOffset;
 
-    function getScrollSource() {
-      return window.innerWidth > 1100 ? window : scroller || window;
-    }
-
-    function getScrollTop() {
-      return window.innerWidth > 1100
-        ? window.pageYOffset
-        : scroller
-          ? scroller.scrollTop
-          : window.pageYOffset;
-    }
-
-    function onScroll() {
-      const currentScroll = getScrollTop();
+      // Scroll-Logik: Runterscrollen (>100px vom Top) → verstecken, Hochscrollen → zeigen
       if (currentScroll > lastScroll && currentScroll > 100) {
-        header.classList.add("header-hidden");
+        setIsHidden(true);
       } else {
-        header.classList.remove("header-hidden");
+        setIsHidden(false);
       }
+
       lastScroll = currentScroll;
-    }
-
-    let currentSource = getScrollSource();
-    currentSource.addEventListener("scroll", onScroll, { passive: true });
-
-    function handleResize() {
-      const newSource = getScrollSource();
-      if (newSource !== currentSource) {
-        currentSource.removeEventListener("scroll", onScroll);
-        newSource.addEventListener("scroll", onScroll, { passive: true });
-        lastScroll = getScrollTop();
-        currentSource = newSource;
-      }
-    }
-
-    window.addEventListener("resize", handleResize);
-
-    const burger = document.querySelector(".header-burger-menu");
-    const menu = document.querySelector(".header__menu");
-    const menuLinks = document.querySelectorAll(".header__link");
-
-    function closeMenu() {
-      menu?.classList.remove("menu-active");
-      burger?.classList.remove("burger-active");
-    }
-
-    function toggleMenu() {
-      menu?.classList.toggle("menu-active");
-      burger?.classList.toggle("burger-active");
-    }
-
-    menuLinks.forEach((link) => {
-      link.addEventListener("click", closeMenu);
-    });
-    burger?.addEventListener("click", toggleMenu);
-
-    return () => {
-      currentSource.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", handleResize);
-      menuLinks.forEach((link) => {
-        link.removeEventListener("click", closeMenu);
-      });
-      burger?.removeEventListener("click", toggleMenu);
     };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup: Listener entfernen beim Unmount (verhindert Memory Leaks)
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <header className="header">
-      <header className="header">
-        <div className="header-content">
-          <div className="logo">LOGO</div>
+    <>
+      {/* Dynamische className: isHidden steuert -translate-y-full (versteckt) oder translate-y-0 (sichtbar) */}
+      <header
+        className={`fixed top-0 left-0 w-full bg-black text-white py-8 px-10 z-50 transition-transform duration-800 ease-in-out ${
+          isHidden ? "-translate-y-full" : "translate-y-0"
+        }`}
+      >
+        <div className="flex items-center justify-between">
+          <div className="text-2xl font-bold">LOGO</div>
 
-          <nav className="header__menu">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#services">Services</a>
-            <a href="#expertise" className="expertise-link">
+          {/* Navigation: Mobile = Slide-in Panel, Desktop = normale Nav */}
+          <nav
+            className={`
+              lg:flex lg:flex-row lg:static lg:w-auto lg:h-auto lg:bg-transparent
+              fixed top-0 flex flex-col justify-center items-center h-screen w-72 bg-black
+              transition-all duration-800 ease-in-out
+              ${isMenuOpen ? "right-0" : "-right-full"}
+            `}
+          >
+            <Link href="#home" onClick={toggleMenu}>
+              Home
+            </Link>
+            <Link href="#about" onClick={toggleMenu}>
+              About
+            </Link>
+            <Link href="#services" onClick={toggleMenu}>
+              Services
+            </Link>
+            <Link href="#expertise" onClick={toggleMenu}>
               Expertise
-            </a>
-            <a href="#contact">Contact</a>
+            </Link>
+            <Link href="#contact" onClick={toggleMenu}>
+              Contact
+            </Link>
           </nav>
 
-          <div className="header-burger-menu">
-            <span></span>
-            <span></span>
-            <span></span>
+          {/* Burger mit onClick und Animation zum X */}
+          <div
+            onClick={toggleMenu}
+            className="flex lg:hidden flex-col gap-1 cursor-pointer"
+          >
+            <span
+              className={`w-6 h-0.5 bg-white transition-transform duration-500 ${
+                isMenuOpen ? "rotate-45 translate-y-1.5" : ""
+              }`}
+            ></span>
+            <span
+              className={`w-6 h-0.5 bg-white transition-opacity duration-500 ${
+                isMenuOpen ? "opacity-0" : ""
+              }`}
+            ></span>
+            <span
+              className={`w-6 h-0.5 bg-white transition-transform duration-500 ${
+                isMenuOpen ? "-rotate-45 -translate-y-1.5" : ""
+              }`}
+            ></span>
           </div>
         </div>
       </header>
 
       <div className="scroll-container">
-        <section style={{height: "100vh", background: "#f0f0f0", display: "flex", alignItems: "center", justifyContent: "center"}}>
+        <section
+          style={{
+            height: "100vh",
+            background: "#f0f0f0",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <h1>Scroll down to test header</h1>
         </section>
 
-        <section style={{height: "100vh", background: "#e0e0e0", display: "flex", alignItems: "center", justifyContent: "center"}}>
+        <section
+          style={{
+            height: "100vh",
+            background: "#e0e0e0",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <h2>Keep scrolling...</h2>
         </section>
 
-        <section style={{height: "100vh", background: "#d0d0d0", display: "flex", alignItems: "center", justifyContent: "center"}}>
+        <section
+          style={{
+            height: "100vh",
+            background: "#d0d0d0",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <h2>Scroll up to see header appear</h2>
         </section>
       </div>
-    </header>
+    </>
   );
 }
