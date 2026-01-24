@@ -49,7 +49,7 @@ export default function Navbar() {
           {/* Navigation: Mobile = Slide-in Panel, Desktop = normale Nav */}
           <nav
             className={`
-              lg:flex lg:flex-row lg:static lg:w-auto lg:h-auto lg:bg-transparent
+              lg:flex lg:flex-row lg:static lg:w-auto lg:h-auto lg:bg-transparent lg: gap-4
               fixed top-0 flex flex-col justify-center items-center h-screen w-72 bg-black
               transition-all duration-800 ease-in-out
               ${isMenuOpen ? "right-0" : "-right-full"}
@@ -106,7 +106,9 @@ export default function Navbar() {
             justifyContent: "center",
           }}
         >
-          <h1>Scroll down to test header</h1>
+          <Link href="/" className="text-2xl underline">
+            Home
+          </Link>
         </section>
 
         <section
@@ -118,7 +120,9 @@ export default function Navbar() {
             justifyContent: "center",
           }}
         >
-          <h2>Keep scrolling...</h2>
+          <Link href="/" className="text-2xl underline">
+            Home
+          </Link>
         </section>
 
         <section
@@ -130,7 +134,9 @@ export default function Navbar() {
             justifyContent: "center",
           }}
         >
-          <h2>Scroll up to see header appear</h2>
+          <Link href="/" className="text-2xl underline">
+            Home
+          </Link>
         </section>
       </div>
     </>

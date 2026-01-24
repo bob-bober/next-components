@@ -3,6 +3,7 @@
 :root {
   --white: #fbfbfb;
   --black: #2a2a2a;
+  --orange: #e66a1f;
 }
 
 @font-face {
@@ -31,6 +32,7 @@
   --color-black: var(--black);
   --font-sans: "PP Radio Grotesk", sans-serif;
   --font-mono: "PP Neue Montreal Mono", monospace;
+  --color-orange: var(--orange);
 }
 
 body {

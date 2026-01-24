@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-import Navbar from "../components/Navbar";
+import TransitionAnimation from "@/components/page-transition/TransitionAnimation";
+import PageContent from "@/components/page-transition/PageContent";
 
 export const metadata = {
   title: "Create Next App",
@@ -12,8 +12,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Navbar />
-        {children}
+        {/* Vorhänge sind IMMER da (versteckt bei y: -100%), 
+            damit TransitionLink sie finden kann */}
+        <TransitionAnimation />
+        
+        {/* Wrapper für sanften Fade-in bei jedem Seitenwechsel */}
+        <PageContent>
+          {children}
+        </PageContent>
       </body>
     </html>
   );
